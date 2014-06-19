@@ -4,7 +4,7 @@ imports:
 
 framework:
     #esi:             ~
-    #translator:      { fallback: "%locale%" }
+    translator:      { fallback: "%locale%" }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -64,3 +64,33 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+
+#FOS User Bundle
+fos_user:
+    db_driver: orm 
+    firewall_name: main
+    user_class: PictureChat\UserBundle\Entity\User
+    
+#upload
+knp_gaufrette:
+    stream_wrapper: ~
+
+    adapters:
+        file_adapter:
+            local:
+                directory: %kernel.root_dir%/../web/upload/
+
+    filesystems:
+        file_upload_fs:
+            adapter:    file_adapter
+
+vich_uploader:
+    db_driver: orm
+    gaufrette: true
+    storage:   vich_uploader.storage.gaufrette
+    mappings:
+        file_upload:
+            uri_prefix: /upload/
+            upload_destination: file_upload_fs    
+            namer: vich_uploader.namer_uniqid
