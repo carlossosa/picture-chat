@@ -1,34 +1,32 @@
 {% extends "::base.html.twig" %}
-
-{% block body %}
-     
+{% block stylesheets %}
+    <link rel="stylesheet" href="//frontend.reklamor.com/fancybox/jquery.fancybox.css" media="screen">
+    <link rel="stylesheet" href="{{ path('picturechat_home_css') }}" media="screen">
+{% endblock %}    
+{% block body %}     
     <div class="container">
-
-            {{ form_start(form) }}
-                    {{ form_widget(form) }}
-            {{ form_end(form) }}
-
-    
-    
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
+        
+    {{ form_start(form, {'attr':{'id':'upload_form'} }) }}
+        {{ form_widget(form) }}        
+        <progress id="progressBar" value="0" max="100" style="width:300px;"></progress>
     {{ form_end(form) }}
     
     
     <br>
     <br>
     
-    {% for file in files %}
-        <ul style="list-style: none; display: inline-block">
-            <li style="display: inline-block;"><img src="{{ path( 'picturechat_thumbnail' , {'filename':file.filename,'size':'s'}) }}" class="img-thumbnail" alt="{{ file.filename }}" /><br>       
-        </ul>
+    <ul style="list-style: none; display: inline-block" id="ul-gallery">
+    {% for file in files %}        
+            {% render controller("PictureChatHomeBundle:Default:thumbblock", {'id': file.id}) %}  
     {% endfor %}
-    
+    </ul>
 
     
     </div>
     
 {% endblock %}
 {% block javascripts %}    
-
+<script src="//frontend.reklamor.com/fancybox/jquery.fancybox.js"></script>
+<script src="{{ asset("jquery.form.js") }}"></script>
+<script src="{{ path("picturechat_home_js") }}"></script>
 {% endblock %}

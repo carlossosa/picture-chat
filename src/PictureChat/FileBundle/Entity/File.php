@@ -9,7 +9,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use PictureChat\UserBundle\Entity\User;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="FileRepository")
  * @ORM\Table(name="picturechat_files")
  * @Vich\Uploadable
  */

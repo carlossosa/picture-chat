@@ -1,0 +1,84 @@
+ function loadFancyBoxes () {
+        //FANCYBOX
+        //https://github.com/fancyapps/fancyBox
+        $(".fancybox").fancybox({
+            openEffect: "none",
+            closeEffect: "none"
+        });        
+ 
+        $('.thumbnail').hover(
+            function(){
+                $(this).find('.caption').slideDown(250); //.fadeIn(250)
+            },
+            function(){
+                $(this).find('.caption').slideUp(250); //.fadeOut(205)
+            }
+        );        
+    }           
+    
+// set timeout
+var loadthumbstimer;    
+    
+    function loadNewThumbs(){
+        var json = (function () {
+        var json = null;
+        $.ajax({
+                'async': false,
+                'global': false,
+                'url': "{{path('picturechat_new_files')}}",
+                'dataType': "json",
+                'success': function (data) {
+                    json = data;
+                }
+            });
+            return json;
+        })();
+        
+        $.ajax({
+                'async': false,
+                'global': false,
+                'url': "{{path('picturechat_thumbblocks')}}",
+                'dataType': "html",
+                'data': { ids: json },
+                'success': function (data) {
+                    $("#ul-gallery").prepend(data);
+                }
+            });
+            
+        loadFancyBoxes();
+        loadthumbstimer = setTimeout(loadNewThumbs, 5000);
+    }    
+    
+function abortTimer() { // to be called when you want to stop the timer
+  clearTimeout(loadthumbstimer);
+}    
+    
+    
+ $(document).ready(function(){
+        loadFancyBoxes();      
+        loadthumbstimer = setTimeout(loadNewThumbs, 10000)
+    });    
+
+(function() {
+    
+var bar = $('#progressBar');
+   
+$('#upload_form').ajaxForm({
+    beforeSend: function() {
+        var percentVal = '0';
+        bar.val(percentVal)
+    },
+    uploadProgress: function(event, position, total, percentComplete) {
+        var percentVal = percentComplete;
+        bar.val(percentVal)
+    },
+    success: function() {
+        var percentVal = '100';
+        bar.val(percentVal)
+    },
+	complete: function(xhr) {
+		status.html(xhr.responseText);
+	}
+}); 
+
+})();       

@@ -1,0 +1,14 @@
+<li style="display: inline-block;">   
+    <div class="thumbnail">
+        <div class="caption">
+                <p><a href="{{ path( 'picturechat_thumbnail' , {'filename':file.filename,'size':'m'}) }}" class="label label-danger fancybox" rel="ligthbox">Zoom (M)</a>
+                <a href="{{ path( 'picturechat_thumbnail_download' , {'filename':file.filename,'size':'m'}) }}" class="label label-default" title="Download now">Download (M)</a></p>
+                <p><a href="{{ path( 'picturechat_thumbnail' , {'filename':file.filename,'size':'l'}) }}" class="label label-danger fancybox" rel="ligthbox">Zoom (L)</a>
+                <a href="{{ path( 'picturechat_thumbnail_download' , {'filename':file.filename,'size':'l'}) }}" class="label label-default"  title="Download now">Download (L)</a></p>
+                <p><a href="{{ asset( vich_uploader_asset(file, 'file')) }}" class="label label-danger fancybox" rel="ligthbox">Zoom (Orig)</a>
+                <a href="{{ asset( vich_uploader_asset(file, 'file')) }}" class="label label-default" title="Download now">Download (Orig)</a></p>
+                <a href="" class="label label-warning">Remove</a>
+            </div>
+        <img style="max-width: 200px; max-width: 200px;" width="200px" src="{{ path( 'picturechat_thumbnail' , {'filename':file.filename,'size':'s'}) }}" class="img-thumbnail" alt="{{ file.filename }}" />
+    </div>
+</li>
