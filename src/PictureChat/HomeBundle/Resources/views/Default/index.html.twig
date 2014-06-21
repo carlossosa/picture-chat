@@ -1,5 +1,34 @@
 {% extends "::base.html.twig" %}
 
 {% block body %}
-Hello {{ name }}!
+     
+    <div class="container">
+
+            {{ form_start(form) }}
+                    {{ form_widget(form) }}
+            {{ form_end(form) }}
+
+    
+    
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+    {{ form_end(form) }}
+    
+    
+    <br>
+    <br>
+    
+    {% for file in files %}
+        <ul style="list-style: none; display: inline-block">
+            <li style="display: inline-block;"><img src="{{ path( 'picturechat_thumbnail' , {'filename':file.filename,'size':'s'}) }}" class="img-thumbnail" alt="{{ file.filename }}" /><br>       
+        </ul>
+    {% endfor %}
+    
+
+    
+    </div>
+    
+{% endblock %}
+{% block javascripts %}    
+
 {% endblock %}

@@ -1,7 +1,7 @@
 picture_chat_file:
     resource: "@PictureChatFileBundle/Controller/"
     type:     annotation
-    prefix:   /
+    prefix:   /file
 
 picture_chat_user:
     resource: "@PictureChatUserBundle/Controller/"

@@ -30,7 +30,7 @@ class File
 
     /**
      * @Assert\File(
-     *     maxSize="1M",
+     *     maxSize="8M",
      *     mimeTypes={"image/png", "image/jpeg", "image/pjpeg", "application/zip", "application/x-zip", "application/octet-stream", "application/x-zip-compressed" }
      * )
      * @Vich\UploadableField(mapping="file_upload", fileNameProperty="fileName")
@@ -46,6 +46,21 @@ class File
      */
     protected $fileName;
     
+    /**
+     * @ORM\Column(type="string", length=255, name="mime")
+     *
+     * @var string $mime 
+     */
+    protected $mime;
+    
+    /**
+     * @ORM\Column(type="datetime", name="date")
+     *
+     * @var string $date 
+     */
+    protected $date;
+
+
 
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
@@ -59,6 +74,8 @@ class File
     public function setFile(HttpFile $file)
     {
         $this->file = $file;
+        $this->mime = $file->getMimeType();
+        $this->date = new \DateTime('NOW');
     }
 
     /**
@@ -116,5 +133,51 @@ class File
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set mime
+     *
+     * @param string $mime
+     * @return File
+     */
+    public function setMime($mime)
+    {
+        $this->mime = $mime;
+
+        return $this;
+    }
+
+    /**
+     * Get mime
+     *
+     * @return string 
+     */
+    public function getMime()
+    {
+        return $this->mime;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     * @return File
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime 
+     */
+    public function getDate()
+    {
+        return $this->date;
     }
 }
