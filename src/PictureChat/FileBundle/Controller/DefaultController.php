@@ -35,7 +35,8 @@ class DefaultController extends Controller
         
         // create bse thumbs
         $sizes = array(
-            'xs' => array(90,'auto'),
+            'xxs' => array(90,'auto'),
+            'xs' => array(160,'auto'),
             's' => array(200,'auto'),
             'm' => array(500,'auto'),
             'l' => array(640,'auto'),            
@@ -55,11 +56,12 @@ class DefaultController extends Controller
      * @Route("/t/{size}/{filename}/down", name="picturechat_thumbnail_download")
      * @Method({"GET"})
      * @Template()
-     * @Cache(expires="next week")
+     * @Cache(expires="next month")
      */
     public function thumbnailAction($filename,$size, Request $r) {
         $sizes = array(
-            'xs' => array(90,'auto'),
+            'xxs' => array(90,'auto'),
+            'xs' => array(160,'auto'),
             's' => array(200,'auto'),
             'm' => array(500,'auto'),
             'l' => array(640,'auto'),            
@@ -86,10 +88,10 @@ class DefaultController extends Controller
         $response = new Response();
 
         // Set headers
-        $response->setMaxAge(604800);
+        $response->setMaxAge(2419200);
         $response->setLastModified($file->getDate());        
         $expire = clone $file->getDate();
-        $expire->add(\DateInterval::createFromDateString("next week"));
+        $expire->add(\DateInterval::createFromDateString("next month"));
         $response->setExpires($expire);
         
         
@@ -100,6 +102,10 @@ class DefaultController extends Controller
         else 
             $response->headers->set('Content-Disposition', 'filename="' . basename($file->getFileName()) . '";');
 
+        if ($response->isNotModified($r)) {
+            return $response;
+        }
+        
         // Send headers before outputting anything
         $response->sendHeaders();
 
@@ -109,4 +115,32 @@ class DefaultController extends Controller
         
         return $response;
     }       
+    
+    /**
+     * @Route("/remove", name="picturechat_file_delete")
+     * @Template()
+     */
+    public function removeAction (Request $r) {
+        try {
+            $file = $this->getDoctrine()->getRepository('PictureChatFileBundle:File')->find($r->get("id"));
+            
+            $filename = $file->getFileName();
+            
+            $this->getDoctrine()->getManager()->remove($file);
+            $this->getDoctrine()->getManager()->flush();
+            
+            $exts = array( "", "_xxs", "_xs", "_s", "_m", "_l");
+            $base_path = "gaufrette://file_upload_fs/".$filename;
+            foreach ( $exts as $ext ) {
+                if (file_exists($base_path.$ext)) {
+                    unlink($base_path.$ext);
+                }
+            }
+            
+            return new Response("OK");
+            
+        } catch (\Exception $ex) {
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+        }
+    }
 }

@@ -28,7 +28,7 @@ class DefaultController extends Controller
         ));
         
         
-        $files = $this->getDoctrine()->getManager()->getRepository('PictureChatFileBundle:File')->findBy( array(), array('id'=>'DESC'));
+        $files = $this->getDoctrine()->getManager()->getRepository('PictureChatFileBundle:File')->findBy( array(), array('id'=>'DESC')/*, 5*/);
         
         if ( $files)
             $request->getSession()->set('file_last_id', $files[0]->getId());
@@ -61,14 +61,16 @@ class DefaultController extends Controller
     /**
      * @Route("/index.js", name="picturechat_home_js")
      * @Template("PictureChatHomeBundle:Default:index.js.twig")
+     * @Cache(expires="next week")
      */
     public function indexjsAction(Request $r){
-        return array();
+        return new \Symfony\Component\HttpFoundation\Response($this->renderView('PictureChatHomeBundle:Default:index.js.twig'), 200, array('Content-Type'=>'text/javascript'));
     }
     
     /**
      * @Route("/index.css", name="picturechat_home_css")
      * @Template("PictureChatHomeBundle:Default:index.css.twig")
+     * @Cache(expires="next week")
      */
     public function indexcssAction(Request $r){
         return new \Symfony\Component\HttpFoundation\Response($this->renderView('PictureChatHomeBundle:Default:index.css.twig'), 200, array('Content-Type'=>'text/css'));
@@ -77,7 +79,7 @@ class DefaultController extends Controller
     /**
      * @Route("/thumbblock/{id}_template.html", name="picturechat_thumbblock")
      * @Template()
-     * @Cache(expires="next week")
+     * @Cache(expires="next month")
      */
     public function thumbblockAction ($id) {
         $file = $this->getDoctrine()->getRepository('PictureChatFileBundle:File')->find($id);

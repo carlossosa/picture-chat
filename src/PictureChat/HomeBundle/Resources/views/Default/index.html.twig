@@ -1,6 +1,6 @@
 {% extends "::base.html.twig" %}
 {% block stylesheets %}
-    <link rel="stylesheet" href="//frontend.reklamor.com/fancybox/jquery.fancybox.css" media="screen">
+    <link rel="stylesheet" href="{{ asset("fancybox/jquery.fancybox.css") }}" media="screen">
     <link rel="stylesheet" href="{{ path('picturechat_home_css') }}" media="screen">
 {% endblock %}    
 {% block body %}     
@@ -22,11 +22,34 @@
     </ul>
 
     
+    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+                </div>
+            
+                <div class="modal-body">
+                    <p>You are about to delete one track url, this procedure is irreversible.</p>
+                    <p>Do you want to proceed?</p>
+                    <p class="debug-url"></p>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary danger" data-dismiss="modal">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     </div>
     
 {% endblock %}
 {% block javascripts %}    
-<script src="//frontend.reklamor.com/fancybox/jquery.fancybox.js"></script>
+<script src="{{ asset("fancybox/jquery.fancybox.pack.js") }}"></script>
 <script src="{{ asset("jquery.form.js") }}"></script>
 <script src="{{ path("picturechat_home_js") }}"></script>
 {% endblock %}
